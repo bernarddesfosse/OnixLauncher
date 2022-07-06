@@ -1,0 +1,121 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// French (Canada) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRC)
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH_CANADIAN
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON                    "Icon.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+IDB_PNG1                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\BG.png"
+
+IDB_PNG3                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Logo.png"
+
+IDB_PNG4                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\SussyLogo.png"
+
+IDB_PNG5                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\discordlogo.png"
+
+IDB_PNG7                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Mbtn.png"
+
+IDB_PNG8                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Xbtn.png"
+
+IDB_PNG9                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Logo_Small.png"
+
+IDB_PNG10               PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\SussyLogo_Small.png"
+
+IDB_PNG2                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\BG_Setting.png"
+
+IDB_PNG6                PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\BG_White.png"
+
+IDB_PNG11               PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\BG_Settings_White.png"
+
+IDB_PNG12               PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Xbtn_White.png"
+
+IDB_PNG13               PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Mbtn_White.png"
+
+IDB_PNG14               PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\discordlogo_White.png"
+
+IDB_PNG15               PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\BG_Messagebox_White.png"
+
+IDB_PNG16               PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\BG_Messagebox.png"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TTF
+//
+
+IDR_TTF1                TTF                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Poppins-Bold.ttf"
+
+IDR_TTF3                TTF                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Poppins-Regular.ttf"
+
+IDR_TTF2                TTF                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Poppins-ExtraBold.ttf"
+
+#endif    // French (Canada) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
