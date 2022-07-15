@@ -22,37 +22,50 @@ void DiscordManager::Deinit() {
 }
 
 void DiscordManager::AddServers() {
-    rpcServers.clear();
+    auto oldServers = std::move(rpcServers);
     MemoryBuffer server = Utils::downloadFileInMemory("https://raw.githubusercontent.com/bernarddesfosse/onixclientautoupdate/main/DiscordRpcServers.json");
-    const char* jsonStr = R"({"servers":[{"icon":"server_cubecraft","ips":["mco.cubecraft.net"],"name":"Cubecraft"},{"icon":"server_hive","ips":["geo.hivebedrock.network","fr.hivebedrock.network","ca.hivebedrock.network","sg.hivebedrock.network","jp.hivebedrock.network"],"name":"The Hive"},{"icon":"server_mineville","ips":["play.inpvp.net"],"name":"Mineville"},{"icon":"server_mineplex","ips":["mco.mineplex.com"],"name":"Mineplex"},{"icon":"server_galaxite","ips":["play.galaxite.net"],"name":"Galaxite"},{"icon":"server_lifeboat","ips":["mco.lbsg.net"],"name":"Lifeboat"},{"icon":"server_nethergaymes","ips":["play.nethergames.org"],"name":"NetherGames"},{"icon":"server_hyperlands","ips":["play.hyperlandsmc.net"],"name":"Hyperlands"},{"icon":"server_zeqa","ips":["zeqa.net","51.222.245.157","66.70.181.97","651.222.244.138","51.210.223.196","164.132.200.60","51.210.223.195","51.79.163.9","139.99.120.127","51.79.177.168","51.79.162.196"],"name":"Zeqa"},{"icon":"server_pixelparadise","ips":["play.pixelparadise.gg"],"name":"Pixel Paradise"}]})";
+    const char* defaultServers = R"({"servers":[{"icon":"server_cubecraft","ips":["mco.cubecraft.net"],"name":"Cubecraft"},{"icon":"server_hive","ips":["geo.hivebedrock.network","fr.hivebedrock.network","ca.hivebedrock.network","sg.hivebedrock.network","jp.hivebedrock.network"],"name":"The Hive"},{"icon":"server_mineville","ips":["play.inpvp.net"],"name":"Mineville"},{"icon":"server_mineplex","ips":["mco.mineplex.com"],"name":"Mineplex"},{"icon":"server_galaxite","ips":["play.galaxite.net"],"name":"Galaxite"},{"icon":"server_lifeboat","ips":["mco.lbsg.net"],"name":"Lifeboat"},{"icon":"server_nethergaymes","ips":["play.nethergames.org"],"name":"NetherGames"},{"icon":"server_hyperlands","ips":["play.hyperlandsmc.net"],"name":"Hyperlands"},{"icon":"server_zeqa","ips":["zeqa.net","51.222.245.157","66.70.181.97","651.222.244.138","51.210.223.196","164.132.200.60","51.210.223.195","51.79.163.9","139.99.120.127","51.79.177.168","51.79.162.196"],"name":"Zeqa"},{"icon":"server_pixelparadise","ips":["play.pixelparadise.gg"],"name":"Pixel Paradise"}]})";
+    const char* jsonStr = defaultServers;
 
     if (server) {
         ((char*)server.buffer)[server.size] = 0;
         jsonStr = (char*)server.buffer;
     }
-     // default servers
+    // default servers
 
-    
 
-    json::json serverRoot = json::json::parse(jsonStr);
-    auto root = serverRoot.find("servers");
-    if (root != serverRoot.end() && root->is_array()) {
-        for (const json::json& server : *root) {
-            DiscordManager::Server newServer;
-            auto nameI = server.find("name");
-            if (nameI != server.end() && nameI->is_string())
-                newServer.name = nameI->get<std::string>();
-            auto iconI = server.find("icon");
-            if (iconI != server.end() && iconI->is_string())
-                newServer.icon = iconI->get<std::string>();
-            auto ipListRootI = server.find("ips");
-            if (ipListRootI != server.end() && ipListRootI->is_array())
-                for (const json::json& ip : *ipListRootI) {
-                    if (ip.is_string())
-                        newServer.ips.emplace_back(ip.get<std::string>());
-                }
-            rpcServers.emplace_back(newServer);
+
+    auto parseServersFromJson = [](const char* jsonStr, std::vector<DiscordManager::Server>& rpcServers) {
+        json::json serverRoot = json::json::parse(jsonStr);
+        auto root = serverRoot.find("servers");
+        if (root != serverRoot.end() && root->is_array()) {
+            for (const json::json& server : *root) {
+                DiscordManager::Server newServer;
+                auto nameI = server.find("name");
+                if (nameI != server.end() && nameI->is_string())
+                    newServer.name = nameI->get<std::string>();
+                auto iconI = server.find("icon");
+                if (iconI != server.end() && iconI->is_string())
+                    newServer.icon = iconI->get<std::string>();
+                auto ipListRootI = server.find("ips");
+                if (ipListRootI != server.end() && ipListRootI->is_array())
+                    for (const json::json& ip : *ipListRootI) {
+                        if (ip.is_string())
+                            newServer.ips.emplace_back(ip.get<std::string>());
+                    }
+                rpcServers.emplace_back(newServer);
+            }
         }
+    };
+
+    try {
+        parseServersFromJson(jsonStr, rpcServers);
+    }
+    catch (const std::exception&) {
+        if (oldServers.empty())
+            parseServersFromJson(defaultServers, rpcServers);
+        else
+            rpcServers = std::move(oldServers);
     }
 }
 
