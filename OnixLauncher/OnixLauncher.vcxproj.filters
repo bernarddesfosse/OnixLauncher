@@ -190,18 +190,4 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
-  <ItemGroup>
-    <Font Include="..\..\..\..\Pictures\Onox\Launcher1\Poppins-Black.ttf">
-      <Filter>Resource Files</Filter>
-    </Font>
-    <Font Include="..\..\..\..\Pictures\Onox\Launcher1\Poppins-Bold.ttf">
-      <Filter>Resource Files</Filter>
-    </Font>
-    <Font Include="..\..\..\..\Pictures\Onox\Launcher1\Poppins-ExtraBold.ttf">
-      <Filter>Resource Files</Filter>
-    </Font>
-    <Font Include="..\..\..\..\Pictures\Onox\Launcher1\Poppins-Regular.ttf">
-      <Filter>Resource Files</Filter>
-    </Font>
-  </ItemGroup>
 </Project>

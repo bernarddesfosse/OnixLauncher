@@ -228,12 +228,6 @@
     <Image Include="F:\Users\Onix\Pictures\Camionnette.png" />
     <Image Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Font Include="..\..\..\..\Pictures\Onox\Launcher1\Poppins-Black.ttf" />
-    <Font Include="..\..\..\..\Pictures\Onox\Launcher1\Poppins-Bold.ttf" />
-    <Font Include="..\..\..\..\Pictures\Onox\Launcher1\Poppins-ExtraBold.ttf" />
-    <Font Include="..\..\..\..\Pictures\Onox\Launcher1\Poppins-Regular.ttf" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

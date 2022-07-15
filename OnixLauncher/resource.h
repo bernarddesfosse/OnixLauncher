@@ -4,7 +4,6 @@
 //
 #define IDI_ICON1                       101
 #define IDB_PNG1                        118
-#define IDR_TTF1                        120
 #define IDB_PNG3                        124
 #define IDB_PNG4                        126
 #define IDB_PNG5                        128
@@ -12,8 +11,6 @@
 #define IDB_PNG8                        133
 #define IDB_PNG9                        136
 #define IDB_PNG10                       137
-#define IDR_TTF3                        138
-#define IDR_TTF2                        139
 #define IDB_PNG2                        140
 #define IDB_PNG6                        141
 #define IDB_PNG11                       142

@@ -552,7 +552,10 @@ bool Minecraft::installAppx(const std::string& appxPath, std::string& statusLabe
 	using DeploymentOptions = winrt::Windows::Management::Deployment::DeploymentOptions;
 	using Uri = winrt::Windows::Foundation::Uri;
 
-	std::vector<winrt::Windows::Foundation::Uri> dependencies = { Uri(winrt::to_hstring("https://github.com/bernarddesfosse/onix_compatible_appx/raw/main/Microsoft.Services.Store.Engagement_10.0.19011.0_x64__8wekyb3d8bbwe.Appx")) };
+	std::vector<winrt::Windows::Foundation::Uri> dependencies = { 
+		Uri(winrt::to_hstring("https://raw.githubusercontent.com/bernarddesfosse/onix_compatible_appx/main/Microsoft.Services.Store.Engagement_10.0.19011.0_x64__8wekyb3d8bbwe.Appx")) ,
+		Uri(winrt::to_hstring("https://raw.githubusercontent.com/bernarddesfosse/onix_compatible_appx/main/Microsoft.VCLibs.140.00.Appx"))
+	};
 
 	auto progress = packageManager.AddPackageAsync(Uri(winrt::to_hstring(appxPath.c_str())),
 		std::move(dependencies),

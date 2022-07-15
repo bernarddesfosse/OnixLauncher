@@ -16,7 +16,7 @@
 
 UIManager* mainWindow = nullptr;
 extern UIManager* settingsWindow;
-const char* LAUNCHER_VERSION = "0.01";
+const char* LAUNCHER_VERSION = "0.02";
 
 std::string latestGithubVersion;
 ClientInformation lastClientInformation;
@@ -326,20 +326,34 @@ std::string DownloadMinecraftVersion(const std::string& packageVersion, std::str
 	return std::string();
 }
 
-bool MinecraftInstalled() {
+bool MinecraftInstalled(bool installLatest) {
 	ClientInformation clientinfo = lastClientInformation;
-	if (!lastClientInformation) //so we download latest supported
+	if (!lastClientInformation || installLatest) //so we download latest supported
 		clientinfo = GetLatestClientInformation();
 	//game not installed
-	while (clientinfo && Minecraft::getPackageVersion()[0] == '\0') {
+	while ((clientinfo && Minecraft::getPackageVersion()[0] == '\0') || installLatest) {
 		bool supportsVersion = false;
-		for (const std::string& version : clientinfo.supportedMinecraftPackageVersions)
-			if (version == Minecraft::getPackageVersion()) {
-				supportsVersion = true;
+		if (!installLatest) {
+			for (const std::string& version : clientinfo.supportedMinecraftPackageVersions)
+				if (version == Minecraft::getPackageVersion()) {
+					supportsVersion = true;
+					break;
+				}
+		}
+		else //this list is sorted so front will be latest supported
+			supportsVersion = clientinfo.supportedMinecraftPackageVersions.front() == Minecraft::getPackageVersion();
+		if (supportsVersion) 
+			if (installLatest) {
+				Utils::showMessageBox("No Changes Needed!", "You are already on the latest version that onix client supports.", "Ok");
 				break;
 			}
-		if (supportsVersion) break;
-		int result = Utils::showMessageBox("No Minecrafts?", "You don't seem to have minecraft, Do you want to install it?", "Yes", "No");
+			else
+				break;
+		
+		int result = 1;
+		if (!installLatest)
+			result = Utils::showMessageBox("No Minecrafts?", "You don't seem to have minecraft, Do you want to install it?", "Yes", "No");
+
 		if (result == 0 || result == 2) break;
 		std::string version;
 		if (result == 1) { //latest
@@ -514,7 +528,7 @@ bool MinecraftInstalled() {
 	return Minecraft::getPackageVersion()[0] != '\0';
 }
 
-bool InstallFontResource() { // get font going
+/*bool InstallFontResource() { // get font going
     bool firstFontGamed = true;
     {
         HRSRC resourceIdentifierHandle = FindResource(0, MAKEINTRESOURCE(IDR_TTF1), L"TTF"); // bold
@@ -568,7 +582,7 @@ bool InstallFontResource() { // get font going
     }
 
 	return firstFontGamed;
-}
+}*/
 
 void GetRidOfOtherInstances() {
 	DWORD* PidList = new DWORD[4096];
@@ -773,13 +787,17 @@ int CALLBACK wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInstance, _I
 						return 1;
 					}
 
-					if (!MinecraftInstalled()) {
+					Minecraft::Init();
+					if (!MinecraftInstalled(false)) {
 						Utils::showMessageBox("No Minecraft", "Minecraft is not installed, we cannot change something that does not exist.");
 						Logger::log("no minecraft :/", Logger::Level::Error);
-					}
-					else if (Minecraft::isX86()) {
+						currentlyOpening = false;
+						return 0;
+					} else if (Minecraft::isX86()) {
 						Utils::showMessageBox("Architecture Error", "You are not on 64-bit/x64 minecraft!");
 						Logger::log("Minecraft X86 is not supported.", Logger::Level::Error);
+						currentlyOpening = false;
+						return 0;
 					}
 
 					bool startedGame = false;
@@ -787,9 +805,9 @@ int CALLBACK wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInstance, _I
 						Logger::log("Game is not started, Starting it");
 						Minecraft::start();
 						startedGame = true;
-						if (!Minecraft::waitForStart(5000)) {
+						if (!Minecraft::waitForStart(2000)) {
 							Logger::log("Could not start minecraft bedrock", Logger::Level::Error);
-							Utils::showMessageBox("Error", "Could not start Minecraft: Bedrock Edition!");
+							Utils::showMessageBox("Error", "Could not start Minecraft: Bedrock Edition!\nMaybe try starting manually?");
 							currentlyOpening = false;
 							return 0;
 						}
@@ -808,7 +826,7 @@ int CALLBACK wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInstance, _I
 									Logger::log("You dll does not support the minecraft version you have.", Logger::Level::Error);
 									Utils::showMessageBox("Error", "The dll does not support your minecraft version!");
 								}
-								else if (!MinecraftInstalled()) {
+								else if (!MinecraftInstalled(false)) {
 									Logger::log("The latest version of onix client does not support your minecraft version", Logger::Level::Error);
 									Utils::showMessageBox("Error", "The client does not support your minecraft version!");
 								}
@@ -854,6 +872,7 @@ int CALLBACK wWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE hPrevInstance, _I
 							ShowWindow(mainWindow->getHwnd(), SW_MINIMIZE);
 						}
 					}
+
 					currentlyOpening = false;
 					return 1;
 					}), 0, 0, 0));
@@ -1247,9 +1266,9 @@ start /min cmd.exe /c timeout 1 && del /Q /S %s &
 
 		if (std::filesystem::exists(Minecraft::getMinecraftPath())) {
 			UpdateOnixClientDllFile(false);
-			MinecraftInstalled();
+			MinecraftInstalled(false);
 		} else {
-			MinecraftInstalled();
+			MinecraftInstalled(false);
 			UpdateOnixClientDllFile(false);
 		}
 		

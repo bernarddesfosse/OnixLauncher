@@ -8,7 +8,7 @@ UIManager* settingsWindow = nullptr;
 extern DWORD UpdateOnixClientDllFile(bool);
 extern bool IsReadyToLaunchTheClient;
 extern std::atomic_bool CurrentlyUpdatingTheDll;
-
+extern bool MinecraftInstalled(bool installLatest);
 
 
 
@@ -308,6 +308,32 @@ void ShowSettingsWindow() {
 			if (Options::minimizeAfterLaunch) Options::hideToTrayAfterLaunch = false;
 			Options::saveOptions();
 			This->parent->gfx->redraw = true;
+		};
+	}
+
+	{ //UpdateToLatestMinecraftVersion
+		SettingsImageElement& element = (SettingsImageElement&)window->addUiElement(new SettingsImageElement);
+		element.name = "UpdateToLatestMinecraftVersion";
+		element.posX = (float)70.74;
+		element.posY = (float)337.621;
+		element.sizeX = (float)456.592;
+		element.sizeY = (float)35.37;
+		element.textualContent = L"Update to latest supported Minecraft: Bedrock Edition version";
+		element.togglePtr = &Options::disableRpc;
+		element.makeButton();
+		element.grow = 0.05f;
+		element.requestedTime = 0.2f;
+		element.eclicked = [](UIElement* This) {
+			if (CurrentlyUpdatingTheDll) return;
+			This->parent->destroyWindow();
+			CloseHandle(CreateThread(0, 0, (LPTHREAD_START_ROUTINE)[](LPVOID) -> DWORD {
+				int result = (Utils::showMessageBox("Install latest supported?", "Are you sure you want to install the latest minecraft version that onix client supports?", "Yes", "No", "Cancel"));
+				if (result != 1) return 0;
+				bool installed = MinecraftInstalled(true);
+				if (!installed)
+					Utils::showMessageBox("Failed to install", "The installation failed, sorry.", "Ok");
+				return 0;
+				}, 0, 0, 0));
 		};
 	}
 

@@ -92,18 +92,6 @@ IDB_PNG15               PNG                     "C:\\Users\\Onix\\Pictures\\Onox
 
 IDB_PNG16               PNG                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\BG_Messagebox.png"
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// TTF
-//
-
-IDR_TTF1                TTF                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Poppins-Bold.ttf"
-
-IDR_TTF3                TTF                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Poppins-Regular.ttf"
-
-IDR_TTF2                TTF                     "C:\\Users\\Onix\\Pictures\\Onox\\Launcher1\\Poppins-ExtraBold.ttf"
-
 #endif    // French (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 

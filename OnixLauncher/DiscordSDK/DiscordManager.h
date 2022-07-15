@@ -16,6 +16,7 @@ public:
 	static inline std::vector<Server> rpcServers;
 
 	static inline int64_t startTime;
+	static inline time_t lastServerUpdate;
 	static inline bool wantDeath = false;
 	static inline bool isDead = false;
 	static inline bool lastEnableSetting = false;

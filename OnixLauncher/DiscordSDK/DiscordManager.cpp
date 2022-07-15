@@ -22,6 +22,7 @@ void DiscordManager::Deinit() {
 }
 
 void DiscordManager::AddServers() {
+    lastServerUpdate = time(0);
     auto oldServers = std::move(rpcServers);
     MemoryBuffer server = Utils::downloadFileInMemory("https://raw.githubusercontent.com/bernarddesfosse/onixclientautoupdate/main/DiscordRpcServers.json");
     const char* defaultServers = R"({"servers":[{"icon":"server_cubecraft","ips":["mco.cubecraft.net"],"name":"Cubecraft"},{"icon":"server_hive","ips":["geo.hivebedrock.network","fr.hivebedrock.network","ca.hivebedrock.network","sg.hivebedrock.network","jp.hivebedrock.network"],"name":"The Hive"},{"icon":"server_mineville","ips":["play.inpvp.net"],"name":"Mineville"},{"icon":"server_mineplex","ips":["mco.mineplex.com"],"name":"Mineplex"},{"icon":"server_galaxite","ips":["play.galaxite.net"],"name":"Galaxite"},{"icon":"server_lifeboat","ips":["mco.lbsg.net"],"name":"Lifeboat"},{"icon":"server_nethergaymes","ips":["play.nethergames.org"],"name":"NetherGames"},{"icon":"server_hyperlands","ips":["play.hyperlandsmc.net"],"name":"Hyperlands"},{"icon":"server_zeqa","ips":["zeqa.net","51.222.245.157","66.70.181.97","651.222.244.138","51.210.223.196","164.132.200.60","51.210.223.195","51.79.163.9","139.99.120.127","51.79.177.168","51.79.162.196"],"name":"Zeqa"},{"icon":"server_pixelparadise","ips":["play.pixelparadise.gg"],"name":"Pixel Paradise"}]})";
@@ -106,6 +107,9 @@ void DiscordManager::Start() {
     bool wasMinecraftStarted = Minecraft::isOpen();
     time_t lastAccess = time(0);
     while (!wantDeath) {
+        if (!Options::disableRpc && (time(0) - lastServerUpdate) > 86400)
+            AddServers(); //refresh list every 24 hours
+
         if (Options::disableRpc != lastEnableSetting) {
             lastEnableSetting = Options::disableRpc;
             if (Options::disableRpc) {
